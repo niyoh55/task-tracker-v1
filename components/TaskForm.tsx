@@ -55,7 +55,7 @@ const TaskForm = (): ReactElement => {
   };
 
   return (
-    <View className="px-5 bg-[#112D4E]">
+    <View className="flex-1 px-5 bg-[#112D4E]">
       <View className="flex-row items-center justify-center">
         <Input
           label="Task Name"
@@ -68,34 +68,9 @@ const TaskForm = (): ReactElement => {
             color: "white",
           }}
         />
-
-        <TouchableOpacity
-          onPress={handleSubmit}
-          className="p-1 bg-red-200 rounded-lg"
-        >
-          <Icon name="enter" type="ant-design" color="#517fa4" />
-        </TouchableOpacity>
       </View>
-      {/* <View className="flex-row items-center justify-center"> */}
-      <TouchableOpacity
-        onPress={showDatepicker}
-        className="flex-row items-center justify-center py-2 bg-red-200 rounded-lg shadow-2xl gap-x-5"
-      >
-        <Icon name="calendar" type="font-awesome" color="#517fa4" />
-        <Text>
-          {date
-            ? date?.toLocaleDateString("en-US", {
-                month: "long",
-                day: "numeric",
-                year: "numeric",
-              })
-            : "Select Date"}
-        </Text>
-      </TouchableOpacity>
-
-      <View className="flex-col mt-3 bg-red-200 rounded-lg shadow-2xl">
+      <View className="flex-col py-3 my-3 bg-white rounded-lg shadow-2xl">
         <Text className="px-5 text-2xl font-bold">Priority:</Text>
-
         <View className="flex-row items-center justify-start">
           <View className="flex-row items-center justify-center">
             <CheckBox
@@ -129,6 +104,28 @@ const TaskForm = (): ReactElement => {
           </View>
         </View>
       </View>
+      <TouchableOpacity
+        onPress={showDatepicker}
+        className="flex-row items-center justify-center py-2 bg-white rounded-lg shadow-2xl gap-x-5"
+      >
+        <Icon name="calendar" type="font-awesome" color="#517fa4" />
+        <Text className="py-1 text-xl font-semibold">
+          {date
+            ? date?.toLocaleDateString("en-US", {
+                month: "long",
+                day: "numeric",
+                year: "numeric",
+              })
+            : "Select Date"}
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={handleSubmit}
+        className="flex-row items-center justify-center p-2 mt-auto mb-5 bg-white rounded-lg shadow-2xl gap-x-3"
+      >
+        <Text className="text-2xl font-bold text-center">Add Task</Text>
+        <Icon name="enter" type="ant-design" color="#517fa4" />
+      </TouchableOpacity>
       {/* </View> */}
       {show && (
         <DateTimePicker

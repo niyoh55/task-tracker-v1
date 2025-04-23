@@ -1,5 +1,6 @@
 import { PRIORITY_MAP } from "@/constants";
 import useTaskStore from "@/store/taskStore";
+import { FontAwesome5 } from "@expo/vector-icons";
 import { CheckBox } from "@rneui/base";
 import React from "react";
 import { View, Animated, Text } from "react-native";
@@ -14,7 +15,15 @@ const TaskListItem: React.FC<ListItemProps> = ({ item }) => {
 
   return (
     <Animated.View className="flex-1 rounded-lg pl-5 pr-0 !bg-[#3F72AF] py-3 flex-row items-center">
-      <View className="!bg-[#3F72AF] flex-1">
+      <View className="items-center justify-center pr-3">
+        <FontAwesome5
+          size={20}
+          name="flag"
+          color={PRIORITY_MAP[item.priority].color}
+          solid
+        />
+      </View>
+      <View className="!bg-[#3F72AF] flex-1 justify-center">
         <Text className="!text-[#F9F7F7] text-2xl">{item.title}</Text>
         {item?.date && (
           <Text className="!text-[#F9F7F7] text-base">
@@ -25,12 +34,12 @@ const TaskListItem: React.FC<ListItemProps> = ({ item }) => {
             })}
           </Text>
         )}
-        <Text
+        {/* <Text
           className={`text-sm`}
           style={{ color: PRIORITY_MAP[item.priority].color }}
         >
           {PRIORITY_MAP[item.priority].description}
-        </Text>
+        </Text> */}
       </View>
       <View className="!bg-[#3F72AF] z-10">
         <CheckBox

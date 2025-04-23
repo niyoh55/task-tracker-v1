@@ -31,7 +31,7 @@ export default function TabOneScreen() {
   const { tasks, removeTask } = useTaskStore((state) => state);
 
   return (
-    <SafeAreaView className="!flex-1 !bg-[#112D4E] pt-5 pb-3">
+    <SafeAreaView className="!flex-1 !bg-[#112D4E]">
       <TaskList data={tasks} />
       <TouchableOpacity
         activeOpacity={0.7}
@@ -57,14 +57,14 @@ const styles = StyleSheet.create({
   button: {
     position: "absolute",
     bottom: 20,
-    right: 20, // Adjust to ensure it's aligned to the bottom-left corner
+    right: 20,
     backgroundColor: "#DBE2EF",
     width: 60,
     height: 60,
-    borderRadius: 30, // Makes it circular
+    borderRadius: 30,
     justifyContent: "center",
     alignItems: "center",
-    elevation: 5, // Adds shadow for a floating effect
+    elevation: 5,
   },
   buttonText: {
     color: "#3F72AF",

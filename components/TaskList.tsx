@@ -28,7 +28,7 @@ const TaskList = ({ data }: { data: Task[] }): ReactElement => {
       keyExtractor={(item) => item.id}
       renderItem={renderItem}
       showsVerticalScrollIndicator={false}
-      itemLayoutAnimation={LinearTransition.duration(300)}
+      itemLayoutAnimation={LinearTransition.duration(200)}
       ItemSeparatorComponent={() => (
         <Divider inset={false} insetType="middle" />
       )}
