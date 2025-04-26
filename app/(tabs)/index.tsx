@@ -1,4 +1,6 @@
 import {
+  Alert,
+  PermissionsAndroid,
   Pressable,
   StyleSheet,
   TouchableOpacity,
@@ -22,6 +24,7 @@ import { CheckBox, Divider } from "@rneui/base";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import TaskList from "@/components/TaskList";
+import messaging from "@react-native-firebase/messaging";
 
 export default function TabOneScreen() {
   const router = useRouter();
@@ -29,6 +32,37 @@ export default function TabOneScreen() {
   const viewableItems = useSharedValue<ViewToken[]>([]);
 
   const { tasks, removeTask } = useTaskStore((state) => state);
+
+  const requestUserPermission = async () => {
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+    PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS
+    ); // Request permission for notifications
+
+    if (enabled) {
+      console.log("Authorization status:", authStatus);
+    }
+  };
+
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async (remoteMessage) => {
+      Alert.alert("A new FCM message arrived!", JSON.stringify(remoteMessage));
+    });
+
+    return unsubscribe;
+  }, []);
+
+  const getToken = async () => {
+    const token = await messaging().getToken();
+    console.log({ token123: token });
+  };
+  useEffect(() => {
+    requestUserPermission(); // Request permission for notifications
+    getToken();
+  }, []);
 
   return (
     <SafeAreaView className="!flex-1 !bg-[#112D4E]">
