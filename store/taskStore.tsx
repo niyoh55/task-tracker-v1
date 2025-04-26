@@ -1,22 +1,20 @@
+import { Task } from "@/app/(tabs)";
 import { create } from "zustand";
 
-interface Task {
-  id: string;
-  title: string;
-  completed: boolean;
-  date: Date | undefined;
-  priority: number;
-}
-
- interface TaskStore {
+interface TaskStore {
   tasks: Task[];
   addTask: (task: Task) => void;
   toggleTaskCompletion: (id: string) => void;
   removeTask: (id: string) => void;
+  setTasksList: (tasks: Task[]) => void;
 }
 
 const useTaskStore = create<TaskStore>((set) => ({
   tasks: [],
+  setTasksList: (tasks: Task[]) =>
+    set((state) => ({
+      tasks: tasks,
+    })),
   addTask: (task) =>
     set((state) => ({
       tasks: [task, ...state.tasks],

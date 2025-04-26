@@ -3,14 +3,7 @@ import React, { ReactElement } from "react";
 import Animated, { LinearTransition } from "react-native-reanimated";
 import { CheckBox, Divider } from "@rneui/base";
 import TaskListItem from "./TaskListItem";
-
-interface Task {
-  id: string;
-  title: string;
-  completed: boolean;
-  date: Date | undefined;
-  priority: number;
-}
+import { Task } from "@/app/(tabs)";
 
 const TaskList = ({ data }: { data: Task[] }): ReactElement => {
   const renderItem = ({ item }: { item: any }) => {

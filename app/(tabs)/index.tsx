@@ -9,7 +9,7 @@ import {
 
 import EditScreenInfo from "@/components/EditScreenInfo";
 import { Text, View } from "@/components/Themed";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import TaskForm from "@/components/TaskForm";
 import useTaskStore from "@/store/taskStore";
 import Animated, {
@@ -24,44 +24,62 @@ import { CheckBox, Divider } from "@rneui/base";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import TaskList from "@/components/TaskList";
-import messaging from "@react-native-firebase/messaging";
+import firestore from "@react-native-firebase/firestore";
+// import messaging from "@react-native-firebase/messaging";
+
+export type Task = {
+  id: string;
+  title: string;
+  // description: string;
+  completed: boolean;
+  date: Date | string | undefined;
+  priority: number;
+};
 
 export default function TabOneScreen() {
   const router = useRouter();
 
   const viewableItems = useSharedValue<ViewToken[]>([]);
 
-  const { tasks, removeTask } = useTaskStore((state) => state);
+  const { tasks, removeTask, setTasksList } = useTaskStore((state) => state);
 
-  const requestUserPermission = async () => {
-    const authStatus = await messaging().requestPermission();
-    const enabled =
-      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-    PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS
-    ); // Request permission for notifications
-
-    if (enabled) {
-      console.log("Authorization status:", authStatus);
+  const fetchTasks = async () => {
+    const tasks = await firestore().collection("tasks").get();
+    const tasksList: Task[] = tasks.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        title: data.title || "",
+        // description: data.description || "",
+        completed: data.completed || false,
+        date: (data?.date && new Date(data?.date?.seconds * 1000)) || "",
+        priority: data.priority || 0,
+      };
+    });
+    console.log({ tasksList });
+    if (tasksList.length > 0) {
+      setTasksList(tasksList);
     }
   };
 
-  useEffect(() => {
-    const unsubscribe = messaging().onMessage(async (remoteMessage) => {
-      Alert.alert("A new FCM message arrived!", JSON.stringify(remoteMessage));
-    });
-
-    return unsubscribe;
-  }, []);
-
-  const getToken = async () => {
-    const token = await messaging().getToken();
-    console.log({ token123: token });
+  const addTask = async () => {
+    const addTask123 = await firestore()
+      .collection("tasks")
+      .add({
+        title: "wews123",
+        completed: false,
+        date: new Date(),
+        priority: 0,
+      })
+      .then(() => {
+        console.log("User added!");
+      });
+    console.log({ addTask123: addTask123 });
   };
+
   useEffect(() => {
-    requestUserPermission(); // Request permission for notifications
-    getToken();
+    fetchTasks();
+    // addTask();
   }, []);
 
   return (
