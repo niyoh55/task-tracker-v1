@@ -7,12 +7,13 @@ import DateTimePicker, {
 } from "@react-native-community/datetimepicker";
 import { Picker } from "@react-native-picker/picker";
 import { CheckBox, Icon } from "@rneui/base";
-import useTaskStore from "@/store/taskStore";
 import { useRouter } from "expo-router";
+import useTaskStore from "@/features/tasks/store";
+import { addTask } from "@/features/tasks/api";
 
 const TaskForm = (): ReactElement => {
   const router = useRouter();
-  const { addTask } = useTaskStore((state) => state);
+  // const { addTask } = useTaskStore((state) => state);
 
   const [text, setText] = useState("");
   const [date, setDate] = useState<Date | undefined>(undefined);
@@ -43,14 +44,16 @@ const TaskForm = (): ReactElement => {
   };
 
   const handleSubmit = () => {
-    addTask({
-      id: Math.random().toString(36).substring(7),
-      title: text ? text : "Task Name",
-      completed: false,
-      date: date,
-      priority: selectedIndex,
-    });
-    clearAllInputs();
+    addTask(
+      {
+        title: text ? text : "Task Name",
+        completed: false,
+        date: date,
+        priority: selectedIndex,
+      },
+      () => clearAllInputs()
+    );
+
     router.back();
   };
 

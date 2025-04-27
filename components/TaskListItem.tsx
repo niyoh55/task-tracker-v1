@@ -1,5 +1,5 @@
 import { PRIORITY_MAP } from "@/constants";
-import useTaskStore from "@/store/taskStore";
+import useTaskStore from "@/features/tasks/store";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { CheckBox } from "@rneui/base";
 import React from "react";

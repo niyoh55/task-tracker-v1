@@ -11,7 +11,7 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
-
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useColorScheme } from "@/components/useColorScheme";
 
 export {
@@ -54,16 +54,20 @@ export default function RootLayout() {
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
 
+  const queryClient = new QueryClient();
+
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DarkTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen
-          name="task"
-          options={{ headerShown: true, headerTitle: "Add Task" }}
-        />
-        <Stack.Screen name="modal" options={{ presentation: "modal" }} />
-      </Stack>
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DarkTheme}>
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen
+            name="task"
+            options={{ headerShown: true, headerTitle: "Add Task" }}
+          />
+          <Stack.Screen name="modal" options={{ presentation: "modal" }} />
+        </Stack>
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 }

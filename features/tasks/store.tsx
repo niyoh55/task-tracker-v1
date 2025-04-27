@@ -1,7 +1,7 @@
-import { Task } from "@/app/(tabs)";
+import { Task } from "@/types";
 import { create } from "zustand";
 
-interface TaskStore {
+export interface TaskStore {
   tasks: Task[];
   addTask: (task: Task) => void;
   toggleTaskCompletion: (id: string) => void;
@@ -12,9 +12,14 @@ interface TaskStore {
 const useTaskStore = create<TaskStore>((set) => ({
   tasks: [],
   setTasksList: (tasks: Task[]) =>
-    set((state) => ({
-      tasks: tasks,
-    })),
+    set((state) => {
+      const sortedTasks = tasks.sort((a, b) => {
+        return a.dateCreated > b.dateCreated ? -1 : 1;
+      });
+      return {
+        tasks: sortedTasks,
+      };
+    }),
   addTask: (task) =>
     set((state) => ({
       tasks: [task, ...state.tasks],
