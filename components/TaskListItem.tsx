@@ -32,7 +32,13 @@ const TaskListItem: React.FC<ListItemProps> = ({ item }) => {
         />
       </View>
       <View className="!bg-[#3F72AF] flex-1 justify-center">
-        <Text className="!text-[#F9F7F7] text-2xl">{item.title}</Text>
+        <Text
+          className={`!text-[#F9F7F7] text-2xl ${
+            item?.completed && "line-through"
+          } decoration-4`}
+        >
+          {item.title}
+        </Text>
         {item?.date && (
           <Text className="!text-[#F9F7F7] text-base">
             {item.date?.toLocaleDateString("en-US", {
@@ -42,25 +48,21 @@ const TaskListItem: React.FC<ListItemProps> = ({ item }) => {
             })}
           </Text>
         )}
-        {/* <Text
-          className={`text-sm`}
-          style={{ color: PRIORITY_MAP[item.priority].color }}
-        >
-          {PRIORITY_MAP[item.priority].description}
-        </Text> */}
       </View>
       <View className="!bg-[#3F72AF] z-10">
         <BouncyCheckbox
           size={25}
-          fillColor="red"
+          fillColor="#112D4E"
           unFillColor="#FFFFFF"
-          iconStyle={{ borderColor: "red" }}
+          iconStyle={{ borderColor: "red", borderRadius: 0 }}
           innerIconStyle={{ borderWidth: 0 }}
           onLongPress={() => {
             if (item?.completed) {
               deleteTask(item.id);
             } else {
-              return;
+              updateTask(item.id, {
+                completed: true,
+              });
             }
           }}
           onPress={(isChecked: boolean) => {

@@ -3,7 +3,7 @@ import React, { ReactElement } from "react";
 import Animated, { LinearTransition } from "react-native-reanimated";
 import { CheckBox, Divider } from "@rneui/base";
 import TaskListItem from "./TaskListItem";
-import { Task } from "@/app/(tabs)";
+import { Task } from "@/types";
 
 const TaskList = ({ data }: { data: Task[] }): ReactElement => {
   const renderItem = ({ item }: { item: any }) => {
