@@ -1,13 +1,21 @@
 import { PRIORITY_MAP } from "@/constants";
+import { deleteTask, updateTask } from "@/features/tasks/api";
 import useTaskStore from "@/features/tasks/store";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { CheckBox } from "@rneui/base";
 import React from "react";
 import { View, Animated, Text } from "react-native";
 import { useAnimatedStyle, withTiming } from "react-native-reanimated";
+import BouncyCheckbox from "react-native-bouncy-checkbox";
 
 interface ListItemProps {
-  item: { id: string; title: string; date: Date | undefined; priority: number };
+  item: {
+    id: string;
+    title: string;
+    date: Date | undefined;
+    priority: number;
+    completed: boolean;
+  };
 }
 
 const TaskListItem: React.FC<ListItemProps> = ({ item }) => {
@@ -42,15 +50,25 @@ const TaskListItem: React.FC<ListItemProps> = ({ item }) => {
         </Text> */}
       </View>
       <View className="!bg-[#3F72AF] z-10">
-        <CheckBox
-          className="!bg-[#3F72AF]"
-          checked={false}
-          onPress={() => {
-            removeTask(item.id);
+        <BouncyCheckbox
+          size={25}
+          fillColor="red"
+          unFillColor="#FFFFFF"
+          iconStyle={{ borderColor: "red" }}
+          innerIconStyle={{ borderWidth: 0 }}
+          onLongPress={() => {
+            if (item?.completed) {
+              deleteTask(item.id);
+            } else {
+              return;
+            }
           }}
-          iconType="material-community"
-          checkedIcon="checkbox-outline"
-          uncheckedIcon={"checkbox-blank-outline"}
+          onPress={(isChecked: boolean) => {
+            updateTask(item.id, {
+              completed: isChecked,
+            });
+          }}
+          isChecked={item?.completed}
         />
       </View>
     </Animated.View>

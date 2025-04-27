@@ -43,3 +43,24 @@ export const addTask = async (
       console.log("Error adding task: ", error);
     });
 };
+
+export const deleteTask = async (taskId: string) => {
+  try {
+    await firestore().collection("tasks").doc(taskId).delete();
+    console.log(`Task with ID ${taskId} deleted successfully.`);
+  } catch (error) {
+    console.error("Error deleting task:", error);
+  }
+};
+
+export const updateTask = async (
+  taskId: string,
+  updatedFields: Partial<{ title: string; completed: boolean }>
+) => {
+  try {
+    await firestore().collection("tasks").doc(taskId).update(updatedFields);
+    console.log(`Task with ID ${taskId} updated successfully.`);
+  } catch (error) {
+    console.error("Error updating task:", error);
+  }
+};
